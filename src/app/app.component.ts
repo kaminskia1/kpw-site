@@ -43,17 +43,17 @@ export class AppComponent implements OnInit {
   locationLoaded: boolean = false;
   links = [
     {
-      url: "",
+      url: "https://kaminski.pw/resume",
       icon: "picture_as_pdf",
       name: "Resume",
     },
     {
-      url: "https://github.com/kaminskia1",
+      url: "https://kaminski.pw/github",
       icon: "code",
       name: "GitHub",
     },
     {
-      url: "",
+      url: "https://kaminski.pw/linkedin",
       icon: "group",
       name: "Linkedin",
     },
