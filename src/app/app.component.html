@@ -4,16 +4,16 @@
 
 <div class="app row align-items-start h-100 m-0">
 
-  <div class="col h-100 p-0 align-content-center">
+  <div class="col-6 h-100 p-0">
     <img #background
          (load)="onLoad();"
-         [@imageLoaded]="imageLoaded"
+         [@image]="imageLoaded"
          [ngStyle]="{
-            'margin-top': backgroundObj.offsetHeight,
-            'margin-left': backgroundObj.offsetWidth,
-            'width': backgroundObj.width,
-            'height': backgroundObj.height
-         }"
+          'margin-top': backgroundObj.offsetHeight,
+          'margin-left': backgroundObj.offsetWidth,
+          'width': backgroundObj.width,
+          'height': backgroundObj.height
+       }"
          [src]="backgroundObj.data"
          alt="Background image"
          class="background"/>
@@ -24,7 +24,7 @@
                 mat-mini-fab>
           <mat-icon>refresh</mat-icon>
         </button>
-        <div [@locationLoaded]="locationLoaded" class="overflow-hidden">
+        <div [@location]="imageLoaded" class="overflow-hidden">
           <div class="w-max-content location-text">
             {{ backgroundObj.location }}
           </div>
@@ -34,7 +34,7 @@
 
   </div>
 
-  <div class="col bg-white h-100 p-0 shadow">
+  <div class="col-6 bg-white h-100 p-0 shadow">
 
     <div class="p-4 pb-5">
       <h2 class="display-1 m-0">Hi, I'm Andrew</h2>
