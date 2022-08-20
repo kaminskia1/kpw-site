@@ -4,20 +4,13 @@
 
 <div class="app row align-items-start h-100 m-0">
 
-  <div class="col-6 h-100 p-0">
+  <div #left [ngStyle]="{'width': leftWidth}" class="col-6 left h-100 p-0">
     <img #background
          (load)="onLoad();"
          [@image]="imageLoaded"
-         [ngStyle]="{
-          'margin-top': backgroundObj.offsetHeight,
-          'margin-left': backgroundObj.offsetWidth,
-          'width': backgroundObj.width,
-          'height': backgroundObj.height
-       }"
          [src]="backgroundObj.data"
          alt="Background image"
          class="background"/>
-
     <div class="fixed-bottom p-4 w-50 m-0">
       <div class="bg-white w-fit-content rounded d-flex flex-row p-2 shadow">
         <button (click)="setBackground()" [disabled]="!imageLoaded" class="bg-white shadow-lg text-secondary opacity-75"
@@ -34,7 +27,7 @@
 
   </div>
 
-  <div class="col-6 bg-white h-100 p-0 shadow">
+  <div #right class="col-6 right bg-white h-100 p-0 shadow">
 
     <div class="p-4 pb-5">
       <h2 class="display-1 m-0">Hi, I'm Andrew</h2>

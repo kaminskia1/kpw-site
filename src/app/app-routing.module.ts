@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LandingComponent } from "./page/landing/landing.component";
-import { GalleryComponent } from "./page/gallery/gallery.component";
+import { LandingComponent } from './page/landing/landing.component';
 
 const routes: Routes = [
-  {path: '', component: LandingComponent},
-  {path: 'gallery', component: GalleryComponent }
+  { path: '', component: LandingComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export default class AppRoutingModule { }
