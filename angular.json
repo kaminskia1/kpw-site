@@ -104,9 +104,21 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "kpw-site"
+  "defaultProject": "kpw-site",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }

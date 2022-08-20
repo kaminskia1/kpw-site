@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Roboto:wght@100&display=swap');
 @import '~@angular/material/theming';
 
+$width: 1%;
+
 .app {
   font-family: "Roboto", sans-serif;
 }
@@ -58,4 +60,29 @@
 .link-hover:hover {
   color: #2196F3 !important;
   background-color: rgba(0, 0, 0, .025)
+}
+
+.left {
+  min-width: 50%;
+  max-width: 70%;
+  overflow: hidden;
+}
+
+.right {
+  min-width: 30%;
+  max-width: 50%;
+  clip-path: inset(0px 0px 0px -5px);
+  width: fit-content;
+  $width: width;
+}
+
+
+@media(max-width: 1024px) {
+  .left {
+    display: none;
+  }
+  .right {
+    min-width: 100%;
+    max-width: 100%;
+  }
 }
