@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { BackgroundUrl } from '../../models/background-url/background-url.model';
+import { BackgroundLinkModel } from '../../models/background-url/background-link.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,14 +10,14 @@ import { BackgroundUrl } from '../../models/background-url/background-url.model'
 export class BackgroundService {
   http: HttpClient;
 
-  route = `${environment.api}/backgroundUrl`;
+  route: string = `${environment.api}/background-url`;
 
   constructor(http: HttpClient) {
     this.http = http;
   }
 
-  getBackgroundUrl(): Observable<BackgroundUrl> {
-    return this.http.get<BackgroundUrl>(this.route, { responseType: 'json' });
+  getBackgroundUrl(lastLocation: string = ''): Observable<BackgroundLinkModel> {
+    return this.http.get<BackgroundLinkModel>(this.route, { params: { lastLocation }, responseType: 'json' });
   }
 
   getBackgroundImage(url: string): Observable<Blob> {

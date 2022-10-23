@@ -5,9 +5,12 @@ import {
   animate, state, style, transition, trigger,
 } from '@angular/animations';
 import { DOCUMENT } from '@angular/common';
-import { BackgroundModel } from '../../shared/models/background/background.model';
+import { FileReaderService } from '../../shared/services/file-reader/file-reader.service';
+import { ContentBlocksService } from '../../shared/services/content-blocks/content-blocks.service';
 import { BackgroundService } from '../../shared/services/background/background.service';
-import { LinkItem } from '../../shared/models/link-item/link-item.model';
+import { BackgroundModel } from '../../shared/models/background/background.model';
+import { BackgroundLinkModel } from '../../shared/models/background-url/background-link.model';
+import { ContentBlockModel } from '../../shared/models/link-item/content-block.model';
 
 @Component({
   selector: 'app-landing',
@@ -42,10 +45,6 @@ export class LandingComponent implements OnInit {
 
   @ViewChild('right') rightElement: ElementRef | undefined;
 
-  backgroundService: BackgroundService;
-
-  document: Document;
-
   title: string = 'Portfolio';
 
   leftWidth: string = '50%';
@@ -54,71 +53,38 @@ export class LandingComponent implements OnInit {
 
   imageLoaded: boolean = false;
 
-  backgroundObj = {
-    offsetWidth: '',
-    offsetHeight: '',
-    width: '',
-    height: '100%',
-    location: '0-',
-    data: null,
-  } as BackgroundModel;
+  backgroundInfo: BackgroundModel;
 
-  links: LinkItem[] = [
-    {
-      url: 'https://kaminski.pw/resume',
-      icon: 'picture_as_pdf',
-      name: 'Resume',
-    },
-    {
-      url: 'https://kaminski.pw/linkedin',
-      icon: 'group',
-      name: 'Linkedin',
-    },
-    {
-      url: 'https://kaminski.pw/github',
-      icon: 'code',
-      name: 'GitHub',
-    },
-    {
-      url: 'https://files.kaminski.pw/',
-      icon: 'folder_open',
-      name: 'Files / Media',
-    },
-  ];
+  contentBlocks?: ContentBlockModel[];
 
-  constructor(backgroundService: BackgroundService, @Inject(DOCUMENT) document: Document) {
-    this.backgroundService = backgroundService;
+  constructor(
+    private backgroundService: BackgroundService,
+    private contentBlocksService: ContentBlocksService,
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(FileReaderService) private reader: FileReader,
+  ) {
     this.document = document;
+    this.backgroundService = backgroundService;
+    this.contentBlocksService = contentBlocksService;
+    this.reader = reader;
+
+    this.backgroundInfo = {
+      offsetWidth: '',
+      offsetHeight: '',
+      width: '',
+      height: '100%',
+      location: '',
+      data: null,
+    };
   }
 
   ngOnInit() {
-    this.setBackground();
-  }
+    this.reader.addEventListener('load', () => {
+      this.backgroundInfo.data = this.reader.result;
+    }, false);
 
-  setBackground() {
-    this.imageLoaded = false;
-    this.backgroundService.getBackgroundUrl().subscribe(
-      (response) => {
-        this.backgroundService.getBackgroundImage(response.url).subscribe(
-          (blob: Blob) => {
-            // Delay allows animations to catch up.
-            setTimeout(() => {
-              this.backgroundObj.data = null;
-              if (this.backgroundObj.location !== response.location) {
-                this.backgroundObj.location = response.location;
-              }
-              const reader = new FileReader();
-              reader.addEventListener('load', () => {
-                this.backgroundObj.data = reader.result;
-              }, false);
-              if (blob) {
-                reader.readAsDataURL(blob);
-              }
-            }, 250);
-          },
-        );
-      },
-    );
+    this.setContentBlocks();
+    this.updateBackground();
   }
 
   onLoad() {
@@ -133,5 +99,26 @@ export class LandingComponent implements OnInit {
     if (this.document.defaultView && rightWidth) {
       this.leftWidth = `${(0.994 - (rightWidth / this.document.defaultView.innerWidth)) * 100}%`;
     }
+  }
+
+  updateBackground() {
+    const { location } = this.backgroundInfo;
+    this.imageLoaded = false;
+    this.backgroundService.getBackgroundUrl(location).subscribe((url: BackgroundLinkModel) => {
+      this.backgroundService.getBackgroundImage(url.url).subscribe((data: Blob) => {
+        // Delay allows animations to catch up.
+        setTimeout(() => {
+          this.backgroundInfo.data = null;
+          this.backgroundInfo.location = url.location;
+          this.reader.readAsDataURL(data);
+        }, 250);
+      });
+    });
+  }
+
+  setContentBlocks() {
+    this.contentBlocksService.getContentBlocks().subscribe((contentBlocks: ContentBlockModel[]) => {
+      this.contentBlocks = contentBlocks;
+    });
   }
 }
