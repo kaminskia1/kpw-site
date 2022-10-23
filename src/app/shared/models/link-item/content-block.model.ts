@@ -1,4 +1,4 @@
-export interface LinkItem {
+export interface ContentBlockModel {
   name: string;
   url: string;
   icon: string;
