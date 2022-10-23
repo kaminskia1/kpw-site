@@ -15,4 +15,4 @@ jobs:
     - name: npm ci
       run: npm ci
     - name: Angular test in production mode
-      run: npm run test:ci
+      run: npm run test
